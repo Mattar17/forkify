@@ -1,3 +1,5 @@
+import * as config from "./config.js";
+import * as helper from "./helpers.js";
 
 export const state = {
     recipe: {}
@@ -6,20 +8,15 @@ export const state = {
 export const loadRecipe = async function (id) {
     if (!id) return;
 
-
     try {
-        const res = await fetch(`https://forkify-api.jonas.io/api/v2/recipes/${id}`);
-        const data = await res.json();
-
-        if (!res.ok) {
-            throw new Error(`${data.message}`);
-        }
+        const data = await helper.getJSON(`${config.API_URL}${id}`);
+        console.log(data);
 
         const { recipe } = data.data;
         state.recipe = recipe;
     }
 
     catch (err) {
-        console.log(err);
+        throw err;
     }
 }

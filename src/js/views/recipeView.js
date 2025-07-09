@@ -3,12 +3,19 @@ import icons from 'url:../../img/icons.svg';
 class RecipeView {
   #parentElement = document.querySelector('.recipe');
   #data;
+  #errorMessage = "We couldn't find the recipe you looking for!! try again";
 
   render(data) {
     this.#data = data;
     const markup = this.#generateMarkup();
     this.#parentElement.innerHTML = '';
     this.#parentElement.insertAdjacentHTML('afterbegin', markup);
+  }
+
+  addHandlerRecipe(handler) {
+    ['hashchange', 'load'].forEach(
+      ev => { window.addEventListener(ev, handler) }
+    )
   }
 
   renderSpinner() {
@@ -22,6 +29,22 @@ class RecipeView {
         `
     this.#parentElement.innerHTML = '';
     this.#parentElement.insertAdjacentHTML('afterbegin', html);
+  }
+
+  renderError(errMessage = this.#errorMessage) {
+    const markup = `
+          <div class="error">
+            <div>
+              <svg>
+                <use href="${icons}#icon-alert-triangle"></use>
+              </svg>
+            </div>
+            <p>${errMessage}</p>
+          </div>
+    `
+    this.#parentElement.innerHTML = '';
+    this.#parentElement.insertAdjacentHTML('afterbegin', markup);
+
   }
 
   #generateMarkup() {
