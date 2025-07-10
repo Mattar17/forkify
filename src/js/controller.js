@@ -1,6 +1,7 @@
 import icons from 'url:../img/icons.svg';
 import * as model from './model.js';
 import RecipeView from './views/recipeView.js';
+import SearchView from './views/searchView.js';
 // import { getJSON, responseTimeout } from './helpers.js';
 
 
@@ -25,7 +26,14 @@ const showRecipe = async function () {
 
 };
 
+const searchRecipe = async function (e) {
+  e.preventDefault();
+  await model.loadSearchResults(SearchView.getQuery());
+  console.log(model.state.search);
+}
+
 const init = function () {
   RecipeView.addHandlerRecipe(showRecipe);
+  SearchView.addHandlerSearch(searchRecipe);
 }
 init();

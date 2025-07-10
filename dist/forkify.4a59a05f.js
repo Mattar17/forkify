@@ -674,6 +674,8 @@ var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 var _modelJs = require("./model.js");
 var _recipeViewJs = require("./views/recipeView.js");
 var _recipeViewJsDefault = parcelHelpers.interopDefault(_recipeViewJs);
+var _searchViewJs = require("./views/searchView.js");
+var _searchViewJsDefault = parcelHelpers.interopDefault(_searchViewJs);
 var _runtime = require("regenerator-runtime/runtime");
 ///////////////////////////////////////
 const showRecipe = async function() {
@@ -687,12 +689,18 @@ const showRecipe = async function() {
         (0, _recipeViewJsDefault.default).renderError(err);
     }
 };
+const searchRecipe = async function(e) {
+    e.preventDefault();
+    await _modelJs.loadSearchResults((0, _searchViewJsDefault.default).getQuery());
+    console.log(_modelJs.state.search);
+};
 const init = function() {
     (0, _recipeViewJsDefault.default).addHandlerRecipe(showRecipe);
+    (0, _searchViewJsDefault.default).addHandlerSearch(searchRecipe);
 };
 init();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","url:../img/icons.svg":"fd0vu","core-js/modules/web.immediate.js":"bzsBv","regenerator-runtime/runtime":"f6ot0","./model.js":"3QBkH","./views/recipeView.js":"3wx5k"}],"jnFvT":[function(require,module,exports,__globalThis) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","url:../img/icons.svg":"fd0vu","core-js/modules/web.immediate.js":"bzsBv","regenerator-runtime/runtime":"f6ot0","./model.js":"3QBkH","./views/recipeView.js":"3wx5k","./views/searchView.js":"kbE4Z"}],"jnFvT":[function(require,module,exports,__globalThis) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -2568,18 +2576,30 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "state", ()=>state);
 parcelHelpers.export(exports, "loadRecipe", ()=>loadRecipe);
+parcelHelpers.export(exports, "loadSearchResults", ()=>loadSearchResults);
 var _configJs = require("./config.js");
 var _helpersJs = require("./helpers.js");
 const state = {
-    recipe: {}
+    recipe: {},
+    search: []
 };
 const loadRecipe = async function(id) {
     if (!id) return;
     try {
-        const data = await _helpersJs.getJSON(`${_configJs.API_URL}${id}`);
+        const data = await _helpersJs.getJSON(`${_configJs.API_URL}/${id}`);
         console.log(data);
         const { recipe } = data.data;
         state.recipe = recipe;
+    } catch (err) {
+        throw err;
+    }
+};
+const loadSearchResults = async function(query) {
+    console.log(query);
+    if (!query) return;
+    try {
+        const data = await _helpersJs.getJSON(`${_configJs.API_URL}?search=${query}`);
+        state.search = data.data.recipes;
     } catch (err) {
         throw err;
     }
@@ -2590,7 +2610,7 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "API_URL", ()=>API_URL);
 parcelHelpers.export(exports, "TIMEOUT_SEC", ()=>TIMEOUT_SEC);
-const API_URL = "https://forkify-api.jonas.io/api/v2/recipes/";
+const API_URL = "https://forkify-api.jonas.io/api/v2/recipes";
 const TIMEOUT_SEC = 10;
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"7nL9P":[function(require,module,exports,__globalThis) {
@@ -2762,6 +2782,23 @@ class RecipeView {
 }
 exports.default = new RecipeView();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","url:../../img/icons.svg":"fd0vu"}]},["appxp","7dWZ8"], "7dWZ8", "parcelRequire3a11", {}, "./", "/")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","url:../../img/icons.svg":"fd0vu"}],"kbE4Z":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+class SearchView {
+    #parentElement = document.querySelector('.results');
+    #query = '';
+    #form = document.querySelector('.search');
+    getQuery() {
+        return this.#query = document.querySelector(".search__field").value;
+    }
+    addHandlerSearch(handler) {
+        this.query = document.querySelector('.search__field').value;
+        this.#form.addEventListener('submit', handler);
+    }
+}
+exports.default = new SearchView();
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}]},["appxp","7dWZ8"], "7dWZ8", "parcelRequire3a11", {}, "./", "/")
 
 //# sourceMappingURL=forkify.4a59a05f.js.map
