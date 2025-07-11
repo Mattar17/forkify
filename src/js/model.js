@@ -26,7 +26,6 @@ export const loadSearchResults = async function (query) {
     try {
         const data = await helper.getJSON(`${config.API_URL}?search=${query}`);
         state.search = data.data.recipes;
-        console.log(state.search);
     }
 
     catch (err) {

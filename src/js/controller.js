@@ -11,7 +11,9 @@ import recipeView from './views/recipeView.js';
 
 ///////////////////////////////////////
 
-const showRecipe = async function () {
+const showRecipe = async function (e) {
+  e.preventDefault();
+
   try {
     const id = window.location.hash.slice(1);
     if (!id) return;
@@ -29,7 +31,6 @@ const showRecipe = async function () {
 const searchRecipe = async function (e) {
   e.preventDefault();
   try {
-
     SearchView.renderSpinner();
     await model.loadSearchResults(SearchView.getQuery());
     SearchView.render(model.state.search);

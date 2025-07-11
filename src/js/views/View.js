@@ -3,8 +3,9 @@ import icons from 'url:../../img/icons.svg';
 export default class View {
   errorMessage = 'Somthing went Wrong! please try again';
 
-  render() {
-    const markup = this._generateMarkup(this._data);
+  render(data) {
+    this._data = data;
+    const markup = this._generateMarkup(data);
     this._parentElement.innerHTML = '';
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }

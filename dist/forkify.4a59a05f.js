@@ -678,7 +678,8 @@ var _searchViewJs = require("./views/searchView.js");
 var _searchViewJsDefault = parcelHelpers.interopDefault(_searchViewJs);
 var _runtime = require("regenerator-runtime/runtime");
 ///////////////////////////////////////
-const showRecipe = async function() {
+const showRecipe = async function(e) {
+    e.preventDefault();
     try {
         const id = window.location.hash.slice(1);
         if (!id) return;
@@ -2603,7 +2604,6 @@ const loadSearchResults = async function(query) {
     try {
         const data = await _helpersJs.getJSON(`${_configJs.API_URL}?search=${query}`);
         state.search = data.data.recipes;
-        console.log(state.search);
     } catch (err) {
         throw err;
     }
@@ -2769,8 +2769,9 @@ var _iconsSvg = require("url:../../img/icons.svg");
 var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 class View {
     errorMessage = 'Somthing went Wrong! please try again';
-    render() {
-        const markup = this._generateMarkup(this._data);
+    render(data) {
+        this._data = data;
+        const markup = this._generateMarkup(data);
         this._parentElement.innerHTML = '';
         this._parentElement.insertAdjacentHTML('afterbegin', markup);
     }
@@ -2821,14 +2822,14 @@ class SearchView extends (0, _viewJsDefault.default) {
         this.query = document.querySelector('.search__field').value;
         this.#form.addEventListener('submit', handler);
     }
-    _generateMarkup(data) {
-        return data.map((rec)=>this._recipeMarkup(rec)).join('');
+    _generateMarkup() {
+        return this._data.map((rec)=>this._recipeMarkup(rec)).join('');
     }
     _recipeMarkup(rec) {
         return `<li class="preview">
-            <a class="preview__link preview__link--active" href=${rec.id}>
+            <a class="preview__link preview__link--active" href="#${rec.id}">
               <figure class="preview__fig">
-                <img src=${rec.image_url} alt="Test" />
+                <img src="${rec.image_url}" alt="Test" />
               </figure>
               <div class="preview__data">
                 <h4 class="preview__title">${rec.title}</h4>
