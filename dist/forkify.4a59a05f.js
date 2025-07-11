@@ -2603,6 +2603,7 @@ const loadSearchResults = async function(query) {
     if (!query) return;
     try {
         const data = await _helpersJs.getJSON(`${_configJs.API_URL}?search=${query}`);
+        if (data.results === 0) throw new Error("Query not found!! try again");
         state.search = data.data.recipes;
     } catch (err) {
         throw err;

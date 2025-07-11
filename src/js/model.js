@@ -25,6 +25,7 @@ export const loadSearchResults = async function (query) {
 
     try {
         const data = await helper.getJSON(`${config.API_URL}?search=${query}`);
+        if (data.results === 0) throw new Error("Query not found!! try again");
         state.search = data.data.recipes;
     }
 
