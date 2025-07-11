@@ -11,8 +11,6 @@ export const loadRecipe = async function (id) {
 
     try {
         const data = await helper.getJSON(`${config.API_URL}/${id}`);
-        console.log(data);
-
         const { recipe } = data.data;
         state.recipe = recipe;
     }
@@ -23,12 +21,12 @@ export const loadRecipe = async function (id) {
 }
 
 export const loadSearchResults = async function (query) {
-    console.log(query);
     if (!query) return;
 
     try {
         const data = await helper.getJSON(`${config.API_URL}?search=${query}`);
         state.search = data.data.recipes;
+        console.log(state.search);
     }
 
     catch (err) {

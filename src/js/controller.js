@@ -28,8 +28,16 @@ const showRecipe = async function () {
 
 const searchRecipe = async function (e) {
   e.preventDefault();
-  await model.loadSearchResults(SearchView.getQuery());
-  console.log(model.state.search);
+  try {
+
+    SearchView.renderSpinner();
+    await model.loadSearchResults(SearchView.getQuery());
+    SearchView.render(model.state.search);
+
+  } catch (err) {
+    SearchView.renderError(err);
+  }
+
 }
 
 const init = function () {
