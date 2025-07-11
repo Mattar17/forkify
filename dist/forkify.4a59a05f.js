@@ -2811,6 +2811,7 @@ var _iconsSvg = require("url:../../img/icons.svg");
 var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 class SearchView extends (0, _viewJsDefault.default) {
     _parentElement = document.querySelector('.results');
+    _data;
     #query = '';
     #form = document.querySelector('.search');
     getQuery() {
@@ -2819,12 +2820,6 @@ class SearchView extends (0, _viewJsDefault.default) {
     addHandlerSearch(handler) {
         this.query = document.querySelector('.search__field').value;
         this.#form.addEventListener('submit', handler);
-    }
-    render(data) {
-        this._data = data;
-        const markup = this._generateMarkup(data);
-        this._parentElement.innerHTML = '';
-        this._parentElement.insertAdjacentHTML('afterbegin', markup);
     }
     _generateMarkup(data) {
         return data.map((rec)=>this._recipeMarkup(rec)).join('');
