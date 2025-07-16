@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "parcel index.html",
-    "build": "parcel build index.html"
+    "start": "node init && parcel index.html",
+    "build": "node init && parcel build index.html"
   },
   "author": "Mattar",
   "license": "ISC",
