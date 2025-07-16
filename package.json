@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "parcel index.html",
+    "start": "node api.js && parcel index.html",
     "build": "parcel build index.html"
   },
   "author": "Mattar",
