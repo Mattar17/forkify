@@ -5,20 +5,13 @@ class RecipeView extends View {
   _parentElement = document.querySelector('.recipe');
   _errorMessage = "We couldn't find the recipe you looking for!! try again";
 
-  render(data) {
-    this._data = data;
-    const markup = this.#generateMarkup();
-    this._parentElement.innerHTML = '';
-    this._parentElement.insertAdjacentHTML('afterbegin', markup);
-  }
-
   addHandlerRecipe(handler) {
     ['hashchange', 'load'].forEach(
       ev => { window.addEventListener(ev, handler) }
     )
   }
 
-  #generateMarkup() {
+  _generateMarkup() {
     return `
     <div class="recipe">
         <figure class="recipe__fig">
