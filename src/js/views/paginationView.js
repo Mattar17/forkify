@@ -6,6 +6,13 @@ class PaginationView extends View {
     _parentElement = document.querySelector('.pagination');
 
 
+    addHandlerClick(handler) {
+        this._parentElement.addEventListener('click', (e) => {
+            const btn = e.target.closest(".btn--inline");
+            if (!btn) return;
+            handler(+btn.dataset.goto);
+        })
+    }
     _generateMarkup(data) {
         const numPages = Math.ceil(data.results.length / data.resultsPerPage);
         const currPage = data.page;
@@ -13,7 +20,7 @@ class PaginationView extends View {
         console.log("pagination markup");
 
         if (currPage === 1 && numPages > 1)
-            return `<button class="btn--inline pagination__btn--next">
+            return `<button data-goto=${currPage + 1} class="btn--inline pagination__btn--next">
                 <span>Page ${currPage + 1}</span>
                 <svg class="search__icon">
                 <use href="${icons}#icon-arrow-right"></use>
@@ -23,7 +30,7 @@ class PaginationView extends View {
 
         if (currPage === numPages && numPages > 1)
             return `
-            <button class="btn--inline pagination__btn--prev">
+            <button data-goto=${currPage - 1} class="btn--inline pagination__btn--prev">
             <svg class="search__icon">
               <use href="${icons}#icon-arrow-left"></use>
             </svg>
@@ -33,13 +40,13 @@ class PaginationView extends View {
 
         if (currPage > 1 && numPages > 1) {
             return `
-                <button class="btn--inline pagination__btn--next">
+                <button data-goto=${currPage + 1} class="btn--inline pagination__btn--next">
                 <span>Page ${currPage + 1}</span>
                 <svg class="search__icon">
                 <use href="${icons}#icon-arrow-right"></use>
                 </svg>
                 </button>
-                <button class="btn--inline pagination__btn--prev">
+                <button data-goto=${currPage - 1} class="btn--inline pagination__btn--prev">
                 <svg class="search__icon">
                 <use href="${icons}#icon-arrow-left"></use>
                 </svg>
@@ -48,6 +55,8 @@ class PaginationView extends View {
             `;
 
         }
+
+
 
     }
 

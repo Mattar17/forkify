@@ -706,12 +706,14 @@ const searchRecipe = async function(e) {
         (0, _searchViewJsDefault.default).renderError(err);
     }
 };
-const contorlPagination = async function() {
+const contorlPagination = async function(page) {
+    (0, _searchViewJsDefault.default).render(_modelJs.getSearchResultPage(page));
     (0, _paginationViewJsDefault.default).render(_modelJs.state.search);
 };
 const init = function() {
     (0, _recipeViewJsDefault.default).addHandlerRecipe(showRecipe);
     (0, _searchViewJsDefault.default).addHandlerSearch(searchRecipe);
+    (0, _paginationViewJsDefault.default).addHandlerClick(contorlPagination);
 };
 init();
 
@@ -2876,11 +2878,18 @@ var _iconsSvg = require("url:../../img/icons.svg");
 var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 class PaginationView extends (0, _viewJsDefault.default) {
     _parentElement = document.querySelector('.pagination');
+    addHandlerClick(handler) {
+        this._parentElement.addEventListener('click', (e)=>{
+            const btn = e.target.closest(".btn--inline");
+            if (!btn) return;
+            handler(+btn.dataset.goto);
+        });
+    }
     _generateMarkup(data) {
         const numPages = Math.ceil(data.results.length / data.resultsPerPage);
         const currPage = data.page;
         console.log("pagination markup");
-        if (currPage === 1 && numPages > 1) return `<button class="btn--inline pagination__btn--next">
+        if (currPage === 1 && numPages > 1) return `<button data-goto=${currPage + 1} class="btn--inline pagination__btn--next">
                 <span>Page ${currPage + 1}</span>
                 <svg class="search__icon">
                 <use href="${0, _iconsSvgDefault.default}#icon-arrow-right"></use>
@@ -2888,7 +2897,7 @@ class PaginationView extends (0, _viewJsDefault.default) {
             </button>
             `;
         if (currPage === numPages && numPages > 1) return `
-            <button class="btn--inline pagination__btn--prev">
+            <button data-goto=${currPage - 1} class="btn--inline pagination__btn--prev">
             <svg class="search__icon">
               <use href="${0, _iconsSvgDefault.default}#icon-arrow-left"></use>
             </svg>
@@ -2896,13 +2905,13 @@ class PaginationView extends (0, _viewJsDefault.default) {
           </button>
           `;
         if (currPage > 1 && numPages > 1) return `
-                <button class="btn--inline pagination__btn--next">
+                <button data-goto=${currPage + 1} class="btn--inline pagination__btn--next">
                 <span>Page ${currPage + 1}</span>
                 <svg class="search__icon">
                 <use href="${0, _iconsSvgDefault.default}#icon-arrow-right"></use>
                 </svg>
                 </button>
-                <button class="btn--inline pagination__btn--prev">
+                <button data-goto=${currPage - 1} class="btn--inline pagination__btn--prev">
                 <svg class="search__icon">
                 <use href="${0, _iconsSvgDefault.default}#icon-arrow-left"></use>
                 </svg>
@@ -2913,6 +2922,6 @@ class PaginationView extends (0, _viewJsDefault.default) {
 }
 exports.default = new PaginationView();
 
-},{"url:../../img/icons.svg":"fd0vu","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","./View.js":"jSw21"}]},["appxp","7dWZ8"], "7dWZ8", "parcelRequire3a11", {}, "./", "/")
+},{"./View.js":"jSw21","url:../../img/icons.svg":"fd0vu","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}]},["appxp","7dWZ8"], "7dWZ8", "parcelRequire3a11", {}, "./", "/")
 
 //# sourceMappingURL=forkify.4a59a05f.js.map

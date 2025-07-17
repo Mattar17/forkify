@@ -47,12 +47,14 @@ const searchRecipe = async function (e) {
 
 }
 
-const contorlPagination = async function () {
+const contorlPagination = async function (page) {
+  SearchView.render(model.getSearchResultPage(page));
   PaginationView.render(model.state.search);
 }
 
 const init = function () {
   RecipeView.addHandlerRecipe(showRecipe);
   SearchView.addHandlerSearch(searchRecipe);
+  PaginationView.addHandlerClick(contorlPagination);
 }
 init();
